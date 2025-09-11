@@ -14,7 +14,274 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      courses: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          duration: string | null
+          id: string
+          instructor: string
+          max_students: number | null
+          price: number
+          progress: number | null
+          start_date: string | null
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          id?: string
+          instructor: string
+          max_students?: number | null
+          price: number
+          progress?: number | null
+          start_date?: string | null
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          id?: string
+          instructor?: string
+          max_students?: number | null
+          price?: number
+          progress?: number | null
+          start_date?: string | null
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      expenses: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string | null
+          date: string | null
+          description: string | null
+          id: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          category: string
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      fees: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          due_date: string | null
+          id: string
+          paid_amount: number | null
+          payment_date: string | null
+          pending_amount: number | null
+          status: string
+          student_id: string | null
+          total_amount: number
+          updated_at: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          paid_amount?: number | null
+          payment_date?: string | null
+          pending_amount?: number | null
+          status?: string
+          student_id?: string | null
+          total_amount: number
+          updated_at?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          paid_amount?: number | null
+          payment_date?: string | null
+          pending_amount?: number | null
+          status?: string
+          student_id?: string | null
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fees_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fees_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      installments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          due_date: string
+          fee_id: string | null
+          id: string
+          payment_date: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          due_date: string
+          fee_id?: string | null
+          id?: string
+          payment_date?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          due_date?: string
+          fee_id?: string | null
+          id?: string
+          payment_date?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "installments_fee_id_fkey"
+            columns: ["fee_id"]
+            isOneToOne: false
+            referencedRelation: "fees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      settings: {
+        Row: {
+          academy_name: string | null
+          address: string | null
+          created_at: string | null
+          currency: string | null
+          email: string | null
+          id: string
+          phone: string | null
+          timezone: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          academy_name?: string | null
+          address?: string | null
+          created_at?: string | null
+          currency?: string | null
+          email?: string | null
+          id?: string
+          phone?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          academy_name?: string | null
+          address?: string | null
+          created_at?: string | null
+          currency?: string | null
+          email?: string | null
+          id?: string
+          phone?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          email: string
+          fees: number | null
+          id: string
+          join_date: string | null
+          name: string
+          phone: string | null
+          status: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          email: string
+          fees?: number | null
+          id?: string
+          join_date?: string | null
+          name: string
+          phone?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          email?: string
+          fees?: number | null
+          id?: string
+          join_date?: string | null
+          name?: string
+          phone?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_students_course"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
