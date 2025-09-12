@@ -23,12 +23,7 @@ const menuItems = [
   { icon: Settings, label: "Settings", id: "settings" },
 ];
 
-interface SidebarProps {
-  activeSection: string;
-  onSectionChange: (section: string) => void;
-}
-
-export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
+export function Sidebar({ activeSection, onSectionChange }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const sidebarContent = (
