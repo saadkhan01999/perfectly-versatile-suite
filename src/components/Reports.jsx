@@ -8,6 +8,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend, PieChart, Pie, Cell } from "recharts";
 
+// Currency formatter (PKR)
+const formatPKR = (value) => {
+  const n = Number(value) || 0;
+  try {
+    return new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', maximumFractionDigits: 0 }).format(n);
+  } catch {
+    return `PKR ${Math.round(n).toLocaleString()}`;
+  }
+};
+
 export function Reports() {
   const [reportType, setReportType] = useState("financial");
   const [timeRange, setTimeRange] = useState("monthly");
@@ -202,20 +212,45 @@ export function Reports() {
     };
   };
 
-  const exportReport = () => {
-    const dataStr = JSON.stringify(reportData, null, 2);
-    const dataBlob = new Blob([dataStr], {type: 'application/json'});
-    const url = URL.createObjectURL(dataBlob);
+  const toCSV = (rows) => {
+    if (!rows || rows.length === 0) return '';
+    const headers = Object.keys(rows[0]);
+    const escape = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const lines = [headers.join(',')];
+    for (const row of rows) {
+      lines.push(headers.map((h) => escape(row[h])).join(','));
+    }
+    return lines.join('\n');
+  };
+
+  const downloadCSV = (rows, name) => {
+    const csv = toCSV(rows);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${reportType}-report-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `${name}-${new Date().toISOString().split('T')[0]}.csv`;
     link.click();
     URL.revokeObjectURL(url);
-    
-    toast({
-      title: "Success",
-      description: "Report exported successfully"
-    });
+  };
+
+  const exportReport = async () => {
+    try {
+      if (reportType === 'financial') {
+        const rows = (reportData?.monthlyData || []).map((d) => ({ month: d.month, revenue: d.revenue, expense: d.expense, profit: d.profit }));
+        downloadCSV(rows, 'financial-report');
+      } else if (reportType === 'student') {
+        const { data: students } = await supabase.from('students').select('id,name,email,phone,fees,status,join_date, courses(title)');
+        const rows = (students || []).map((s) => ({ id: s.id, name: s.name, email: s.email, phone: s.phone, course: s.courses?.title || '', status: s.status, fees: s.fees, join_date: s.join_date }));
+        downloadCSV(rows, 'students-report');
+      } else if (reportType === 'course') {
+        const rows = (reportData?.courseStats || []).map((c) => ({ title: c.title, enrolled: c.enrolled, capacity: c.capacity, revenue: c.revenue, status: c.status, progress: c.progress, utilization: c.utilization }));
+        downloadCSV(rows, 'courses-report');
+      }
+      toast({ title: 'Success', description: 'Report exported as CSV' });
+    } catch (err) {
+      toast({ title: 'Error', description: 'Failed to export report', variant: 'destructive' });
+    }
   };
 
   if (loading) {
@@ -294,7 +329,7 @@ export function Reports() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Total Revenue</p>
-                      <p className="text-2xl font-bold text-success">${reportData.summary.totalRevenue.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-success">{formatPKR(reportData.summary.totalRevenue)}</p>
                     </div>
                     <TrendingUp className="h-8 w-8 text-success" />
                   </div>
@@ -305,7 +340,7 @@ export function Reports() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Total Expenses</p>
-                      <p className="text-2xl font-bold text-destructive">${reportData.summary.totalExpenses.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-destructive">{formatPKR(reportData.summary.totalExpenses)}</p>
                     </div>
                     <TrendingDown className="h-8 w-8 text-destructive" />
                   </div>
@@ -316,7 +351,7 @@ export function Reports() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Net Profit</p>
-                      <p className="text-2xl font-bold text-primary">${reportData.summary.totalProfit.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-primary">{formatPKR(reportData.summary.totalProfit)}</p>
                     </div>
                     <DollarSign className="h-8 w-8 text-primary" />
                   </div>

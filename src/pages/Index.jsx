@@ -6,8 +6,6 @@ import { Courses } from "@/components/Courses";
 import { Fees } from "@/components/Fees";
 import { Reports } from "@/components/Reports";
 import { Settings } from "@/components/Settings";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Bell } from "lucide-react";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -39,26 +37,15 @@ const Index = () => {
         {/* Top Header */}
         <header className="bg-card border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-foreground lg:hidden">
+            <h1 className="text-3xl font-extrabold bg-[linear-gradient(135deg,hsl(var(--primary)),hsl(var(--chart-2)))] bg-clip-text text-transparent tracking-tight lg:hidden">
               Academy Management Software
             </h1>
             <div className="hidden lg:block">
-              <h1 className="text-2xl font-bold text-foreground">
+              <h1 className="text-3xl font-extrabold bg-[linear-gradient(135deg,hsl(var(--primary)),hsl(var(--chart-2)))] bg-clip-text text-transparent tracking-tight">
                 Academy Management Software
               </h1>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Bell className="h-6 w-6 text-muted-foreground cursor-pointer hover:text-foreground transition-colors" />
-                <div className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full"></div>
-              </div>
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  AD
-                </AvatarFallback>
-              </Avatar>
-            </div>
           </div>
         </header>
 

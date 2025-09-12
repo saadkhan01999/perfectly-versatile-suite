@@ -11,6 +11,16 @@ import { Search, Plus, Edit, Trash2, Mail, Phone, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+// Currency formatter (PKR)
+const formatPKR = (value) => {
+  const n = Number(value) || 0;
+  try {
+    return new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR", maximumFractionDigits: 0 }).format(n);
+  } catch {
+    return `PKR ${Math.round(n).toLocaleString()}`;
+  }
+};
+
 export function Students() {
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -226,7 +236,7 @@ export function Students() {
                   <SelectContent>
                     {courses.map(course => (
                       <SelectItem key={course.id} value={course.id}>
-                        {course.title} - ${course.price}
+                        {course.title} - {formatPKR(course.price)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -340,7 +350,7 @@ export function Students() {
                     </div>
                     <div>
                       <p className="text-muted-foreground">Fees</p>
-                      <p className="font-medium text-foreground">${student.fees}</p>
+                      <p className="font-medium text-foreground">{formatPKR(student.fees)}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground">Join Date</p>

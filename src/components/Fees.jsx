@@ -11,6 +11,16 @@ import { Search, Plus, Eye, DollarSign, Calendar, AlertCircle, Trash2 } from "lu
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+// Currency formatter (PKR)
+const formatPKR = (value) => {
+  const n = Number(value) || 0;
+  try {
+    return new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR", maximumFractionDigits: 0 }).format(n);
+  } catch {
+    return `PKR ${Math.round(n).toLocaleString()}`;
+  }
+};
+
 export function Fees() {
   const [searchTerm, setSearchTerm] = useState("");
   const [fees, setFees] = useState([]);
@@ -101,41 +111,41 @@ export function Fees() {
   const handleAddFee = async (e) => {
     e.preventDefault();
     try {
-      const pendingAmount = parseFloat(newFee.total_amount) - parseFloat(newFee.paid_amount);
-      
+      const total = Number(newFee.total_amount);
+      const paid = Number(newFee.paid_amount || 0);
+
+      if (!newFee.student_id || !newFee.course_id || !total || total <= 0) {
+        toast({ title: "Missing data", description: "Select student, course and enter a valid total amount.", variant: "destructive" });
+        return;
+      }
+
+      const pendingAmount = Math.max(total - paid, 0);
+      const computedStatus = pendingAmount === 0 ? "Paid" : paid > 0 ? "Partial" : (newFee.status || "Pending");
+
       const { data, error } = await supabase
         .from('fees')
-        .insert([{
-          ...newFee,
-          total_amount: parseFloat(newFee.total_amount),
-          paid_amount: parseFloat(newFee.paid_amount),
-          pending_amount: pendingAmount
-        }])
+        .insert([
+          {
+            student_id: newFee.student_id,
+            course_id: newFee.course_id,
+            total_amount: total,
+            paid_amount: paid,
+            pending_amount: pendingAmount,
+            due_date: newFee.due_date || null,
+            status: computedStatus,
+          }
+        ])
         .select();
 
       if (error) throw error;
 
       setFees([...fees, data[0]]);
-      setNewFee({
-        student_id: "",
-        course_id: "",
-        total_amount: "",
-        paid_amount: "0",
-        due_date: "",
-        status: "Pending"
-      });
+      setNewFee({ student_id: "", course_id: "", total_amount: "", paid_amount: "0", due_date: "", status: "Pending" });
       setIsAddDialogOpen(false);
-      
-      toast({
-        title: "Success",
-        description: "Fee record added successfully",
-      });
+
+      toast({ title: "Success", description: "Fee record added successfully" });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to add fee record",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: error.message || "Failed to add fee record", variant: "destructive" });
     }
   };
 
@@ -299,7 +309,7 @@ export function Fees() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Collected</p>
-                <p className="text-2xl font-bold text-success">${totalCollected.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-success">{formatPKR(totalCollected)}</p>
               </div>
               <DollarSign className="h-8 w-8 text-success" />
             </div>
@@ -311,7 +321,7 @@ export function Fees() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pending Amount</p>
-                <p className="text-2xl font-bold text-warning">${totalPending.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-warning">{formatPKR(totalPending)}</p>
               </div>
               <Calendar className="h-8 w-8 text-warning" />
             </div>
@@ -323,7 +333,7 @@ export function Fees() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Overdue</p>
-                <p className="text-2xl font-bold text-destructive">${overdueAmount.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-destructive">{formatPKR(overdueAmount)}</p>
               </div>
               <AlertCircle className="h-8 w-8 text-destructive" />
             </div>
@@ -390,15 +400,15 @@ export function Fees() {
                     <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
                       <div>
                         <p className="text-muted-foreground">Total Fees</p>
-                        <p className="font-bold text-foreground">${fee.total_amount?.toLocaleString() || 0}</p>
+                        <p className="font-bold text-foreground">{formatPKR(fee.total_amount)}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Paid</p>
-                        <p className="font-bold text-success">${fee.paid_amount?.toLocaleString() || 0}</p>
+                        <p className="font-bold text-success">{formatPKR(fee.paid_amount)}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Pending</p>
-                        <p className="font-bold text-warning">${fee.pending_amount?.toLocaleString() || 0}</p>
+                        <p className="font-bold text-warning">{formatPKR(fee.pending_amount)}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Due Date</p>
@@ -446,7 +456,7 @@ export function Fees() {
                             Installment {index + 1} - {installment.due_date}
                           </span>
                           <div className="flex items-center gap-2">
-                            <span className="font-medium">${installment.amount?.toLocaleString() || 0}</span>
+                            <span className="font-medium">{formatPKR(installment.amount)}</span>
                             <Badge 
                               className={getStatusColor(installment.status)} 
                               variant="secondary"

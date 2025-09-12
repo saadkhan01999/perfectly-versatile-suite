@@ -12,7 +12,17 @@ import { Plus, Users, Clock, BookOpen, Edit, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const categoryOptions = ["Programming", "Data Science", "Mobile", "Design", "Security", "Marketing"];
+// Currency formatter (PKR)
+const formatPKR = (value) => {
+  const n = Number(value) || 0;
+  try {
+    return new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR", maximumFractionDigits: 0 }).format(n);
+  } catch {
+    return `PKR ${Math.round(n).toLocaleString()}`;
+  }
+};
+
+const categoryOptions = ["IELTS", "DIT", "CIT", "PET", "Duolingo", "General English"];
 
 export function Courses() {
   const [courses, setCourses] = useState([]);
@@ -228,7 +238,7 @@ export function Courses() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="price">Price ($)</Label>
+                  <Label htmlFor="price">Price (PKR)</Label>
                   <Input
                     id="price"
                     type="number"
@@ -330,7 +340,7 @@ export function Courses() {
                 
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Price:</span>
-                  <span className="font-bold text-primary text-base">${course.price}</span>
+                  <span className="font-bold text-primary text-base">{formatPKR(course.price)}</span>
                 </div>
               </div>
 
@@ -397,7 +407,7 @@ export function Courses() {
         <Card className="shadow-sm border-0">
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold text-success">
-              ${courses.reduce((total, course) => total + (course.price || 0), 0).toLocaleString()}
+              {formatPKR(courses.reduce((total, course) => total + (Number(course.price) || 0), 0))}
             </p>
             <p className="text-sm text-muted-foreground">Potential Revenue</p>
           </CardContent>

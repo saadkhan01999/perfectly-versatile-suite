@@ -32,8 +32,8 @@ export function Settings() {
     address: "",
     phone: "",
     email: "",
-    currency: "USD",
-    timezone: "UTC"
+    currency: "PKR",
+    timezone: "PKT"
   });
 
   const [notifications, setNotifications] = useState({
@@ -78,8 +78,8 @@ export function Settings() {
           address: data.address || "",
           phone: data.phone || "",
           email: data.email || "",
-          currency: data.currency || "USD",
-          timezone: data.timezone || "UTC"
+          currency: data.currency || "PKR",
+          timezone: data.timezone || "PKT"
         });
       }
     } catch (error) {
@@ -141,8 +141,8 @@ export function Settings() {
       address: "",
       phone: "",
       email: "",
-      currency: "USD",
-      timezone: "UTC"
+      currency: "PKR",
+      timezone: "PKT"
     });
     
     toast({
@@ -229,11 +229,7 @@ export function Settings() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="USD">USD - US Dollar</SelectItem>
-                      <SelectItem value="EUR">EUR - Euro</SelectItem>
-                      <SelectItem value="GBP">GBP - British Pound</SelectItem>
-                      <SelectItem value="JPY">JPY - Japanese Yen</SelectItem>
-                      <SelectItem value="CAD">CAD - Canadian Dollar</SelectItem>
+                      <SelectItem value="PKR">PKR - Pakistani Rupee</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -256,11 +252,9 @@ export function Settings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="PKT">PKT - Pakistan Standard Time</SelectItem>
                     <SelectItem value="UTC">UTC - Coordinated Universal Time</SelectItem>
-                    <SelectItem value="EST">EST - Eastern Standard Time</SelectItem>
-                    <SelectItem value="PST">PST - Pacific Standard Time</SelectItem>
                     <SelectItem value="GMT">GMT - Greenwich Mean Time</SelectItem>
-                    <SelectItem value="CET">CET - Central European Time</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
