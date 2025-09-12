@@ -4,7 +4,6 @@ import {
   Users, 
   BookOpen, 
   DollarSign, 
-  Receipt, 
   FileText, 
   Settings,
   Menu,
@@ -18,7 +17,6 @@ const menuItems = [
   { icon: Users, label: "Students", id: "students" },
   { icon: BookOpen, label: "Courses", id: "courses" },
   { icon: DollarSign, label: "Fees", id: "fees" },
-  { icon: Receipt, label: "Expenses", id: "expenses" },
   { icon: FileText, label: "Reports", id: "reports" },
   { icon: Settings, label: "Settings", id: "settings" },
 ];

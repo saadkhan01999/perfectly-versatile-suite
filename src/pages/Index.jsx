@@ -4,7 +4,6 @@ import { Dashboard } from "@/components/Dashboard";
 import { Students } from "@/components/Students";
 import { Courses } from "@/components/Courses";
 import { Fees } from "@/components/Fees";
-import { Expenses } from "@/components/Expenses";
 import { Reports } from "@/components/Reports";
 import { Settings } from "@/components/Settings";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -23,8 +22,6 @@ const Index = () => {
         return <Courses />;
       case "fees":
         return <Fees />;
-      case "expenses":
-        return <Expenses />;
       case "reports":
         return <Reports />;
       case "settings":
