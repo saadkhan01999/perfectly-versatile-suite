@@ -25,7 +25,7 @@ export function Sidebar({ activeSection, onSectionChange }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const sidebarContent = (
-    <div className="flex h-full flex-col bg-[hsl(var(--sidebar-bg))] text-white">
+    <div className="flex h-full flex-col bg-[hsl(var(--sidebar-bg))] text-white shadow-xl border-r border-white/10">
       <div className="flex items-center justify-between p-6 border-b border-white/10">
         <h1 className="text-xl font-bold">Academy Management</h1>
         <Button
@@ -70,12 +70,12 @@ export function Sidebar({ activeSection, onSectionChange }) {
     <>
       {/* Mobile Menu Button */}
       <Button
-        variant="ghost"
+        variant="ghost" 
         size="sm"
-        className="lg:hidden fixed top-4 left-4 z-50 bg-card shadow-md"
-        onClick={() => setIsMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 bg-card shadow-md hover:bg-accent"
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
-        <Menu className="h-5 w-5" />
+        {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </Button>
 
       {/* Desktop Sidebar */}
@@ -85,12 +85,12 @@ export function Sidebar({ activeSection, onSectionChange }) {
 
       {/* Mobile Sidebar */}
       {isMobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
+        <div className="lg:hidden fixed inset-0 z-40">
           <div 
-            className="absolute inset-0 bg-black/50" 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
             onClick={() => setIsMobileOpen(false)}
           />
-          <div className="absolute left-0 top-0 h-full w-64">
+          <div className="absolute left-0 top-0 h-full w-64 transform transition-transform duration-300 ease-in-out">
             {sidebarContent}
           </div>
         </div>
