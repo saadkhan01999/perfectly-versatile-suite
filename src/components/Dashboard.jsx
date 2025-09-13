@@ -5,6 +5,7 @@ import { Users, DollarSign, Clock, TrendingUp, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 const monthlyData = [
   { month: "Jan", profit: 2500 },
@@ -44,14 +45,12 @@ export function Dashboard() {
 
   const fetchDashboardStats = async () => {
     try {
-      // Fetch total students
       const { data: students, error: studentsError } = await supabase
         .from('students')
         .select('*');
       
       if (studentsError) throw studentsError;
 
-      // Fetch fees data
       const { data: fees, error: feesError } = await supabase
         .from('fees')
         .select('*');
@@ -65,7 +64,7 @@ export function Dashboard() {
         totalStudents: students?.length || 0,
         feesCollected: totalFees,
         pendingFees: pendingFees,
-        monthlyProfit: totalFees * 0.3 // Assuming 30% profit margin
+        monthlyProfit: totalFees * 0.3
       });
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
@@ -81,31 +80,31 @@ export function Dashboard() {
     },
     {
       title: "Fees Collected",
-      value: `$${stats.feesCollected.toLocaleString()}`,
+      value: `PKR ${stats.feesCollected.toLocaleString()}`,
       icon: DollarSign,
       color: "text-primary",
     },
     {
       title: "Pending Fees",
-      value: `$${stats.pendingFees.toLocaleString()}`,
+      value: `PKR ${stats.pendingFees.toLocaleString()}`,
       icon: Clock,
       color: "text-warning",
     },
     {
       title: "Profit this Month",
-      value: `+$${Math.round(stats.monthlyProfit).toLocaleString()}`,
+      value: `+PKR ${Math.round(stats.monthlyProfit).toLocaleString()}`,
       icon: TrendingUp,
       color: "text-success",
     },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header with Filters */}
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-foreground">Dashboard</h2>
-          <p className="text-muted-foreground">Overview of your academy performance</p>
+          <p className="text-muted-foreground">Academy overview and key metrics</p>
         </div>
         <div className="flex gap-2">
           <Select value={selectedYear} onValueChange={setSelectedYear}>
@@ -149,7 +148,7 @@ export function Dashboard() {
         {statsCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <Card key={index} className="shadow-sm border-0 bg-card hover:shadow-md transition-shadow cursor-pointer">
+            <Card key={index} className="shadow-sm border-0 bg-card hover-scale">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {card.title}
@@ -188,10 +187,10 @@ export function Dashboard() {
                     axisLine={false}
                     tickLine={false}
                     tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                    tickFormatter={(value) => `$${value}`}
+                    tickFormatter={(value) => `PKR ${value}`}
                   />
                   <Tooltip 
-                    formatter={(value) => [`$${value}`, "Profit"]}
+                    formatter={(value) => [`PKR ${value}`, "Profit"]}
                     labelStyle={{ color: "hsl(var(--foreground))" }}
                     contentStyle={{ 
                       backgroundColor: "hsl(var(--card))", 
@@ -254,8 +253,4 @@ export function Dashboard() {
       </div>
     </div>
   );
-}
-
-function cn(...classes) {
-  return classes.filter(Boolean).join(" ");
 }

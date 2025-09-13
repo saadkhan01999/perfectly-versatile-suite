@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/Sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import { Dashboard } from "@/components/Dashboard";
 import { Students } from "@/components/Students";
 import { Courses } from "@/components/Courses";
@@ -30,31 +31,28 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
-      
-      <div className="lg:ml-64">
-        {/* Top Header */}
-        <header className="bg-card border-b border-border px-6 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-extrabold bg-[linear-gradient(135deg,hsl(var(--primary)),hsl(var(--chart-2)))] bg-clip-text text-transparent tracking-tight lg:hidden">
-              Academy Management Software
-            </h1>
-            <div className="hidden lg:block">
-              <h1 className="text-3xl font-extrabold bg-[linear-gradient(135deg,hsl(var(--primary)),hsl(var(--chart-2)))] bg-clip-text text-transparent tracking-tight">
+    <SidebarProvider collapsedWidth={56}>
+      <div className="min-h-screen flex w-full bg-background">
+        <AppSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+        
+        <div className="flex-1 flex flex-col">
+          {/* Top Header */}
+          <header className="bg-card border-b border-border px-6 py-4 flex items-center gap-4">
+            <SidebarTrigger className="lg:hidden" />
+            <div className="flex-1">
+              <h1 className="text-2xl lg:text-3xl font-extrabold bg-gradient-elegant bg-clip-text text-transparent tracking-tight">
                 Academy Management Software
               </h1>
             </div>
-            
-          </div>
-        </header>
+          </header>
 
-        {/* Main Content */}
-        <main className="p-6">
-          {renderContent()}
-        </main>
+          {/* Main Content */}
+          <main className="flex-1 p-6">
+            {renderContent()}
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
