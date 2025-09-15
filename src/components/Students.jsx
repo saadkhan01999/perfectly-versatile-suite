@@ -181,12 +181,12 @@ export function Students() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Students</h2>
-          <p className="text-muted-foreground">Manage student information and enrollment</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Students</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">Manage student information and enrollment</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -264,7 +264,7 @@ export function Students() {
       </div>
 
       {/* Search and Filters */}
-      <Card className="shadow-sm border-0">
+      <Card className="card-elegant">
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -277,7 +277,7 @@ export function Students() {
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-full sm:w-40">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -288,7 +288,7 @@ export function Students() {
               </SelectContent>
             </Select>
             <Select value={courseFilter} onValueChange={setCourseFilter}>
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Course" />
               </SelectTrigger>
               <SelectContent>
@@ -307,27 +307,27 @@ export function Students() {
       {/* Students List */}
       <div className="grid gap-4">
         {filteredStudents.map((student) => (
-          <Card key={student.id} className="shadow-sm border-0">
-            <CardContent className="p-6">
+          <Card key={student.id} className="card-elegant">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <Avatar className="h-12 w-12">
+                  <Avatar className="h-12 w-12 flex-shrink-0">
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       {student.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
                   
-                  <div className="space-y-1">
-                    <h3 className="font-semibold text-foreground">{student.name}</h3>
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <h3 className="font-semibold text-foreground truncate">{student.name}</h3>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        <Mail className="h-3 w-3" />
-                        {student.email}
+                        <Mail className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">{student.email}</span>
                       </div>
                       {student.phone && (
                         <div className="flex items-center gap-1">
-                          <Phone className="h-3 w-3" />
-                          {student.phone}
+                          <Phone className="h-3 w-3 flex-shrink-0" />
+                          <span>{student.phone}</span>
                         </div>
                       )}
                     </div>

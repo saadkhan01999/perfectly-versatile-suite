@@ -187,12 +187,12 @@ export function Fees() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Fee Management</h2>
-          <p className="text-muted-foreground">Track student payments and outstanding fees</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Fee Management</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">Track student payments and outstanding fees</p>
         </div>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -303,54 +303,54 @@ export function Fees() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card className="shadow-sm border-0">
+      <div className="responsive-grid">
+        <Card className="card-elegant">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Collected</p>
-                <p className="text-2xl font-bold text-success">{formatPKR(totalCollected)}</p>
+                <p className="text-xl sm:text-2xl font-bold text-success">{formatPKR(totalCollected)}</p>
               </div>
-              <DollarSign className="h-8 w-8 text-success" />
+              <DollarSign className="h-6 w-6 sm:h-8 sm:w-8 text-success" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm border-0">
+        <Card className="card-elegant">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pending Amount</p>
-                <p className="text-2xl font-bold text-warning">{formatPKR(totalPending)}</p>
+                <p className="text-xl sm:text-2xl font-bold text-warning">{formatPKR(totalPending)}</p>
               </div>
-              <Calendar className="h-8 w-8 text-warning" />
+              <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-warning" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm border-0">
+        <Card className="card-elegant">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Overdue</p>
-                <p className="text-2xl font-bold text-destructive">{formatPKR(overdueAmount)}</p>
+                <p className="text-xl sm:text-2xl font-bold text-destructive">{formatPKR(overdueAmount)}</p>
               </div>
-              <AlertCircle className="h-8 w-8 text-destructive" />
+              <AlertCircle className="h-6 w-6 sm:h-8 sm:w-8 text-destructive" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm border-0">
+        <Card className="card-elegant">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Collection Rate</p>
-                <p className="text-2xl font-bold text-primary">
+                <p className="text-xl sm:text-2xl font-bold text-primary">
                   {totalCollected + totalPending > 0 ? Math.round((totalCollected / (totalCollected + totalPending)) * 100) : 0}%
                 </p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-sm font-bold text-primary">%</span>
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <span className="text-xs sm:text-sm font-bold text-primary">%</span>
               </div>
             </div>
           </CardContent>
@@ -358,7 +358,7 @@ export function Fees() {
       </div>
 
       {/* Search */}
-      <Card className="shadow-sm border-0">
+      <Card className="card-elegant">
         <CardContent className="p-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -380,19 +380,19 @@ export function Fees() {
           const feeInstallments = getFeeInstallments(fee.id);
           
           return (
-            <Card key={fee.id} className="shadow-sm border-0">
-              <CardContent className="p-6">
+            <Card key={fee.id} className="card-elegant">
+              <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <Avatar className="h-12 w-12">
+                    <Avatar className="h-12 w-12 flex-shrink-0">
                       <AvatarFallback className="bg-primary text-primary-foreground">
                         {studentName.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
                     
-                    <div className="space-y-1">
-                      <h3 className="font-semibold text-foreground">{studentName}</h3>
-                      <p className="text-sm text-muted-foreground">{courseName}</p>
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <h3 className="font-semibold text-foreground truncate">{studentName}</h3>
+                      <p className="text-sm text-muted-foreground truncate">{courseName}</p>
                     </div>
                   </div>
 

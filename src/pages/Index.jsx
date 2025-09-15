@@ -31,24 +31,26 @@ const Index = () => {
   };
 
   return (
-    <SidebarProvider collapsedWidth={56}>
-      <div className="min-h-screen flex w-full bg-background">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-muted/20">
         <AppSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
         
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-w-0">
           {/* Top Header */}
-          <header className="bg-card border-b border-border px-6 py-4 flex items-center gap-4">
-            <SidebarTrigger className="lg:hidden" />
-            <div className="flex-1">
-              <h1 className="text-2xl lg:text-3xl font-extrabold bg-gradient-elegant bg-clip-text text-transparent tracking-tight">
+          <header className="bg-card/80 backdrop-blur-sm border-b border-border/50 px-4 sm:px-6 py-4 flex items-center gap-4 sticky top-0 z-10">
+            <SidebarTrigger className="md:hidden" />
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold bg-gradient-elegant bg-clip-text text-transparent tracking-tight truncate">
                 Academy Management Software
               </h1>
             </div>
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-6">
-            {renderContent()}
+          <main className="flex-1 p-4 sm:p-6 overflow-auto">
+            <div className="max-w-7xl mx-auto">
+              {renderContent()}
+            </div>
           </main>
         </div>
       </div>

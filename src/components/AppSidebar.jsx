@@ -37,21 +37,21 @@ export function AppSidebar({ activeSection, onSectionChange }) {
 
   return (
     <Sidebar
-      className={`${collapsed ? "w-14" : "w-60"} bg-[hsl(var(--sidebar-bg))] border-r border-white/10`}
+      className={`${collapsed ? "w-16" : "w-64"} bg-gradient-to-b from-[hsl(var(--sidebar-bg))] to-[hsl(var(--sidebar-accent))] border-r border-white/10 shadow-xl`}
       collapsible
     >
-      <SidebarContent className="bg-[hsl(var(--sidebar-bg))] text-white">
-        <div className="p-6 border-b border-white/10">
+      <SidebarContent className="bg-transparent text-white">
+        <div className="p-4 sm:p-6 border-b border-white/10">
           {!collapsed && (
-            <h1 className="text-xl font-bold text-white">Academy Management</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-white">Academy Management</h1>
           )}
         </div>
 
         <SidebarGroup
           open={isExpanded}
-          className="p-4"
+          className="p-2 sm:p-4"
         >
-          <SidebarGroupLabel className="text-white/80">
+          <SidebarGroupLabel className="text-white/80 text-xs sm:text-sm">
             {!collapsed && "Main Navigation"}
           </SidebarGroupLabel>
 
@@ -63,21 +63,21 @@ export function AppSidebar({ activeSection, onSectionChange }) {
                 
                 return (
                   <SidebarMenuItem key={item.id}>
-                    <SidebarMenuButton 
+                     <SidebarMenuButton 
                       asChild
                       className={`
-                        flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm font-medium transition-all
+                        flex w-full items-center gap-3 rounded-lg px-3 sm:px-4 py-3 text-left text-sm font-medium transition-all duration-200
                         ${isActive 
-                          ? "bg-[hsl(var(--sidebar-accent))] text-white shadow-md" 
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                          ? "bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/20" 
+                          : "text-white/80 hover:bg-white/10 hover:text-white hover:scale-105"
                         }
                       `}
                     >
                       <button
                         onClick={() => onSectionChange(item.id)}
                       >
-                        <Icon className="h-5 w-5" />
-                        {!collapsed && <span>{item.label}</span>}
+                        <Icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                        {!collapsed && <span className="truncate">{item.label}</span>}
                       </button>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

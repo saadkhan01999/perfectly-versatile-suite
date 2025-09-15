@@ -168,12 +168,12 @@ export function Courses() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Courses</h2>
-          <p className="text-muted-foreground">Manage course curriculum and enrollment</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Courses</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">Manage course curriculum and enrollment</p>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -296,9 +296,9 @@ export function Courses() {
       </div>
 
       {/* Courses Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="responsive-grid">
         {courses.map((course) => (
-          <Card key={course.id} className="shadow-sm border-0 h-full flex flex-col">
+          <Card key={course.id} className="card-elegant h-full flex flex-col">
             <CardHeader className="pb-4">
               <div className="flex justify-between items-start gap-2">
                 <Badge className={getCategoryColor(course.category)} variant="secondary">
@@ -383,14 +383,14 @@ export function Courses() {
       )}
 
       {/* Summary Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card className="shadow-sm border-0">
+      <div className="responsive-grid">
+        <Card className="card-elegant">
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold text-primary">{courses.length}</p>
             <p className="text-sm text-muted-foreground">Total Courses</p>
           </CardContent>
         </Card>
-        <Card className="shadow-sm border-0">
+        <Card className="card-elegant">
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold text-success">
               {courses.filter(c => c.status === "Active").length}
@@ -398,13 +398,13 @@ export function Courses() {
             <p className="text-sm text-muted-foreground">Active Courses</p>
           </CardContent>
         </Card>
-        <Card className="shadow-sm border-0">
+        <Card className="card-elegant">
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold text-primary">0</p>
             <p className="text-sm text-muted-foreground">Total Enrollments</p>
           </CardContent>
         </Card>
-        <Card className="shadow-sm border-0">
+        <Card className="card-elegant">
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold text-success">
               {formatPKR(courses.reduce((total, course) => total + (Number(course.price) || 0), 0))}
